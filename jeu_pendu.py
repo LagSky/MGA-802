@@ -54,13 +54,13 @@ def afficher_mot_cache(mot, lettres_devinees):
     return affichage
     
 def indice(mot, lettres_essayees):
-    # Bonus : Fournit une indication sur la tranche alphabétique d'une lettre manquante.
+    # On fournit une indication sur la tranche alphabétique d'une lettre manquante.
     lettres_a_trouver = [lettre for lettre in mot if lettre not in lettres_essayees]
     
     if len(lettres_a_trouver) > 0:
         # On choisit une lettre manquante au hasard
         lettre_cible = random.choice(lettres_a_trouver)
-        
+                
         # On détermine la tranche alphabétique
         if lettre_cible in "abcde":
             tranche = "de A à E"
@@ -87,7 +87,7 @@ def jouer_partie(mots):
     print("NOUVELLE PARTIE DE PENDU")
     print("------------------------------")
 
-    # Boucle while classique pour gérer les chances
+    # On utilise une boucle while pour gérer les chances
     while chances > 0:
         etat_actuel = afficher_mot_cache(mot_secret, lettres_devinees)
         print(f" Mot à deviner : {etat_actuel}")
@@ -124,5 +124,25 @@ def jouer_partie(mots):
 
     # Si la boucle while se termine, c'est qu'on a utilisé toutes les chances
     print(f" Vous avez perdu ! Le mot à trouver était : {mot_secret}")
+    
+def main():
+    # Fonction principale pour lancer le jeu et gérer les parties.
+    print("Bienvenue dans le jeu du pendu !")
+    mots_disponibles = charger_mots()
 
-        
+    # Si la liste est vide, on quitte le jeu
+    if len(mots_disponibles) == 0:
+        return
+    # On demande au joueur s'il veut rejouer après chaque partie
+    continuer = True
+    while continuer:
+        jouer_partie(mots_disponibles)
+
+        choix = input(" Voulez-vous recommencer une partie ? (o/n) : ").lower()
+        if choix != 'o':
+            continuer = False
+
+    print("Merci d'avoir joué. À bientôt !")
+    
+if __name__ == "__main__":
+    main()
