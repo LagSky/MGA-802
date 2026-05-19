@@ -52,7 +52,29 @@ def afficher_mot_cache(mot, lettres_devinees):
         else:
             affichage += "_ "
     return affichage
-
+    
+def indice(mot, lettres_essayees):
+    # Bonus : Fournit une indication sur la tranche alphabétique d'une lettre manquante.
+    lettres_a_trouver = [lettre for lettre in mot if lettre not in lettres_essayees]
+    
+    if len(lettres_a_trouver) > 0:
+        # On choisit une lettre manquante au hasard
+        lettre_cible = random.choice(lettres_a_trouver)
+        
+        # On détermine la tranche alphabétique
+        if lettre_cible in "abcde":
+            tranche = "de A à E"
+        elif lettre_cible in "fghij":
+            tranche = "de F à J"
+        elif lettre_cible in "klmno":
+            tranche = "de K à O"
+        elif lettre_cible in "pqrst":
+            tranche = "de P à T"
+        else:
+            tranche = "de U à Z"
+            
+        print(f" Indice : Il vous manque une lettre comprise {tranche}.")
+        
 def jouer_partie(mots):
     
     # On gère la boucle principale d'une partie de pendu.
@@ -70,6 +92,10 @@ def jouer_partie(mots):
         etat_actuel = afficher_mot_cache(mot_secret, lettres_devinees)
         print(f" Mot à deviner : {etat_actuel}")
         print(f" Chances restantes : {chances}")
+        
+        # On donne un indice lorsque le joueur n'a plus qu'une seule chance
+        if chances == 1:
+            indice(mot_secret, lettres_essayees)
 
         # Condition pour gagner la partie
         if "_" not in etat_actuel:
@@ -90,11 +116,13 @@ def jouer_partie(mots):
         lettres_essayees.append(lettre)
 
         if lettre in mot_secret:
-            print(f"-> Bien joué ! La lettre '{lettre}' fait partie du mot.")
+            print(f" Bien joué ! La lettre '{lettre}' fait partie du mot.")
             lettres_devinees.append(lettre)
         else:
-            print(f"-> Dommage ! La lettre '{lettre}' n'est pas dans le mot.")
+            print(f" Dommage ! La lettre '{lettre}' n'est pas dans le mot.")
             chances -= 1
 
     # Si la boucle while se termine, c'est qu'on a utilisé toutes les chances
     print(f" Vous avez perdu ! Le mot à trouver était : {mot_secret}")
+
+        
